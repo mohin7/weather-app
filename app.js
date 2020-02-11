@@ -133,17 +133,37 @@ const masterHistory = document.getElementById('master-history')
 const API_KEY = "935138391449c70d9fc40c75f44a5dc6"
 
 // Base Url 
-const BASE_URL = `https://samples.openweathermap.org/data/2.5/weather?appid=${API_KEY}`
+const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}`
 // const BASE_URL = `https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=${API_KEY}`
 
 // ICON 
 const ICON_URL = `http://openweathermap.org/img/wn/10d@2x.png`
 
+// Default city 
+const DEFAULT_CITY = "dhaka, bd"
+
 window.addEventListener('DOMContentLoaded', function(){
     navigator.geolocation.getCurrentPosition(s => {
-        console.log(s);
+        getWeatherData(null, s.coords)
     }, e => {
-        console.log(e);
+        getWeatherData()
         
     })
 })
+
+// get weather data 
+function getWeatherData(city = DEFAULT_CITY, coords){
+    let url = BASE_URL;
+    if(city === null){
+        url = `${url}&lat=${coords.latitude}&lon=${coords.longitude}`
+    }else{
+        url = `${url}&q=${city}`
+    }
+    // get data using axios 
+    axios.get(url).then(res=> {
+        console.log(res.data);
+    }).catch(e => {
+        console.log(e);
+    })
+    
+}
