@@ -151,6 +151,17 @@ window.addEventListener("DOMContentLoaded", function() {
       getWeatherData();
     }
   );
+
+  cityInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      if (e.target.value) {
+        getWeatherData(e.target.value);
+        e.target.value = ''
+      } else {
+        alert("no data added");
+      }
+    }
+  });
 });
 
 // get weather data
